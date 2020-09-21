@@ -1,0 +1,55 @@
+{
+    "name": "hyperhire",
+    "version": "1.0.0",
+    "description": "HyperHire application implemented in JavaScript",
+    "main": "main.js",
+    "engines": {
+        "node": "8.10.0",
+        "npm": "5.6.0"
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "nyc mocha --recursive"
+    },
+    "engineStrict": true,
+    "author": "Hyperledger",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "fabric-ca-client": "~1.4.0",
+        "fabric-network": "~1.4.0",
+        "flask": "^0.2.10"
+    },
+    "build": {
+        "extraResources": "python_scripts"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "eslint": "^5.9.0",
+        "jquery": "^3.5.0",
+        "mocha": "^5.2.0",
+        "nyc": "^13.1.0",
+        "python-shell": "^1.0.8",
+        "sinon": "^7.1.1",
+        "sinon-chai": "^3.3.0",
+        "imagemagick": "^0.1.3",
+        "pdfinfo": "^0.0.3",
+        "pdf2image": "^1.2.3"
+    },
+    "nyc": {
+        "exclude": [
+            "coverage/**",
+            "test/**"
+        ],
+        "reporter": [
+            "text-summary",
+            "html"
+        ],
+        "all": true,
+        "check-coverage": true,
+        "statements": 100,
+        "branches": 100,
+        "functions": 100,
+        "lines": 100
+    }
+}

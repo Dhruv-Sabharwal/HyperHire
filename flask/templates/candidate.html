@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Quattrocento|Source+Sans+Pro|Raleway:300&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>HyperHire</title>
+  <link rel="icon" type="image/ico" href="/static/logo.png" />
+</head>
+<style>
+body {background-color: #cfc9ba;}
+@media (min-width: 768px) {
+.navbar-brand.abs
+    {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+    }
+}
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<body>
+  <!-- Navbar -->
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Candidates</a>
+            </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('company') }}">Companies</a>
+              </li>
+          </ul>
+      </div>
+      <div class="mx-auto order-1">
+          <a class="navbar-brand mx-auto" href="#">
+            <img src="/static/logo.png" height="100px" width="100px"/>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+      </div>
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" data-toggle="modal" data-target="#myModal" id="cid">Login/Signup</a>
+              </li>
+          </ul>
+      </div>
+  </nav>
+
+  <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Login/Signup</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- <form>
+          <label for="uid">Candidate ID:</label>
+          <input type="text" id="uid" name="uid">
+          <input type="button" value="Submit" onclick="registerCandidate()">
+        </form> -->
+        <form action="{{ url_for('register_candidate') }}" method="post">
+          <label for="candidate_uid">Candidate ID:</label>
+          <input id="candidate_uid" type="text" name="candidate_uid">
+          <input type="submit" value="Login/Register" name="Login/Signup">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="container-fluid row" style="margin-top:75px;">
+    <div class="container col-md-6" style="text-align:center;margin-left:0px;">
+      <form action = "/upload" method = "post" enctype="multipart/form-data" id="first">
+           <input class="btn btn-demo vertical-center" style="margin:20px; margin-left:220px;" type="file" id="myPdf" name="myPdf" />
+           <br>
+           <label for="companyId" style="display:none;" id="companyIdLabel">Company ID:</label>
+           <input type="text" id="companyId" name="companyId" style="display:none;">
+           <input type = "submit" value="Upload" style="margin:20px;background-color: #a6a6a6;" id="companyButton">
+       </form>
+      <div class="row" id="loading" style="margin-top:40px;display:none; margin-left:50px;">
+        <a id="downloader"></a>
+        <div class="loader" style="height:50px;width:50px;margin-left:300px;"></div>
+        <p style="font-family:Montserrat, sans-serif; margin-top:10px; margin-left:20px;">Please Wait...</p>
+      </div>
+    </div>
+    <br>
+    <div class="container col-md-6" id="pdfWrapper">
+      <img id="pdfPreview" width="900px">
+    </div>
+  </div>
+  {% if login==0 %}
+  <script>
+    alert("Please Login or Signup before continuing")
+  </script>
+  {% endif %}
+  {% if uploaded==1 %}
+  <script>
+    $('#companyId').css("display", "inline-block");
+    $('#companyIdLabel').css("display", "inline-block");
+    $('#first').prop("action", "/applyJob");
+    $('#companyButton').prop("value", "Submit Application");
+    $('#pdfPreview').prop("src", "/static/0.jpg");
+  </script>
+  {% elif uploaded==2 %}
+  <script>
+    alert("Applied for job successfully!");
+    document.getElementById("loading").style.display = "none";
+  </script>
+  {% elif uploaded==-1 %}
+  <script>
+    alert("Failed to submit transaction!");
+    document.getElementById("loading").style.display = "none";
+  </script>
+  {% endif %}
+  {% if result==0 %}
+  <script>
+    alert("Succesfully registered candidate!");
+    $("#cid").replaceWith("<a class=\"nav-link\" href= \"/logoutCandidate\" id=\"cid\">Logout</a>");
+    $("#cid").after("<p class=\"nav-link\" id=\"navtext\">Welcome "+{{uid|tojson}}+"!</p>");
+  </script>
+  {% elif result==1 %}
+  <script>
+    alert("Error! Could not register candidate!");
+  </script>
+  {% elif result==2 %}
+  <script>
+    $("#cid").replaceWith("<a class=\"nav-link\" href= \"/logoutCandidate\" id=\"cid\">Logout</a>");
+    $("#cid").after("<p class=\"nav-link\" id=\"navtext\">Welcome "+{{uid|tojson}}+"!</p>");
+  </script>
+  {% endif %}
+</body>
+</html>

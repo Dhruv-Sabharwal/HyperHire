@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+  <!-- <script>
+    window.jQuery = window.$ = require('jquery');
+  </script> -->
+  <!-- <script src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script> -->
+  <script type="text/javascript" src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Quattrocento|Source+Sans+Pro|Raleway:300&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <script src="main.js"></script>
+  <script src="script2.js"></script> -->
+  <title>HyperHire</title>
+  <link rel="icon" type="image/ico" href="/static/logo.png" />
+</head>
+<style>
+body {background-color: #cfc9ba;}
+@media (min-width: 768px) {
+.navbar-brand.abs
+    {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+    }
+}
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+.notification{
+  font-size: 30px;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 300px;
+  margin-left: 100px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<body>
+  <!-- Navbar -->
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('candidate') }}">Candidates</a>
+            </li>
+              <li class="nav-item">
+                  <a class="nav-link active" href="#">Companies</a>
+              </li>
+          </ul>
+      </div>
+      <div class="mx-auto order-1">
+          <a class="navbar-brand mx-auto" href="#">
+            <img src="/static/logo.png" height="100px" width="100px"/>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+      </div>
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" data-toggle="modal" data-target="#myModal" id="cid">Login/Signup</a>
+              </li>
+          </ul>
+      </div>
+  </nav>
+
+  <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Login/Signup</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('register_company') }}" method="post">
+          <label for="company_uid">Company ID:</label>
+          <input id="company_uid" type="text" name="company_uid">
+          <input type="submit" value="Login/Register">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="container-fluid row" style="margin-top:75px;">
+    <div class="container col-md-6" style="text-align:center;margin-left:0px;">
+      <a href="{{ url_for('query_all')}}"><button class="btn vertical-center" style="margin:20px;background-color: #a6a6a6;" id="queryAll">Query All Applications</button></a>
+    </div>
+    <div class="container col-md-6">
+      <form action="{{ url_for('query_candidate') }}" method="post">
+        <label for="candidateId">Candidate ID</label>
+        <input type="text" id="candidateId" name="candidateId">
+        <input type="submit" value="Query Candidate" style="margin:20px;background-color: #a6a6a6;">
+      </form>
+    </div>
+  </div>
+  <div class="row" id="loading" style="margin-top:40px;display:none; margin-left:50px;">
+    <div class="loader" style="height:50px;width:50px;margin-left:800px;"></div>
+    <p style="font-family:Montserrat, sans-serif; margin-top:10px; margin-left:20px;">Please Wait...</p>
+  </div>
+  {% if login==0 %}
+  <script>
+    alert("Please Login or Signup before continuing")
+  </script>
+  {% endif %}
+  {% if result==0 %}
+  <script>
+    alert("Succesfully registered company!");
+    $("#cid").replaceWith("<a class=\"nav-link\" href= \"/logoutCompany\" id=\"cid\">Logout</a>");
+    $("#cid").after("<p class=\"nav-link\" id=\"navtext\">Welcome "+{{uid|tojson}}+"!</p>");
+  </script>
+  {% elif result==1 %}
+  <script>
+    alert("Error! Could not register company!");
+  </script>
+  {% elif result==2 %}
+  <script>
+    $("#cid").replaceWith("<a class=\"nav-link\" href= \"/logoutCompany\" id=\"cid\">Logout</a>");
+    $("#cid").after("<p class=\"nav-link\" id=\"navtext\">Welcome "+{{uid|tojson}}+"!</p>");
+  </script>
+  {% endif %}
+  <p id="noApps" style="font-family:Montserrat, sans-serif; margin-top:10px; font-size: 40px; display:none; text-align:center;">No Applications Found!</p>
+  {% if query==-1 %}
+  <script>
+    alert("There are no applications!");
+    $('#noApps').css("display", "block");
+  </script>
+  {% elif query==1 %}
+  {% for k, v in candidates.items() %}
+  <script>
+    iTag = "<div class=\"row\"><img src=\"./static/r" + {{loop.index|tojson}} + ".jpg\" width=\"500px\" style=\"margin-left: 400px; margin-bottom: 75px;\">"
+    if({{v|tojson}}==0){
+      aTag = "<button class=\"btn vertical-center\" id=\"a"+{{k|tojson}}+"\"style=\"background-color: #a6a6a6;margin-left: 150px; height:50px; margin-top:300px;\" onclick=\" window.location=\'/callAccept/"+{{k|tojson}}+" \'\">Accept "+{{k|tojson}}+"</button>"
+      rTag = "<button class=\"btn vertical-center\" id=\"r"+{{k|tojson}}+"\"style=\"background-color: #a6a6a6;margin-left: 150px; height:50px; margin-top:300px;\" onclick=\" window.location=\'/callReject/"+{{k|tojson}}+" \'\">Reject "+{{k|tojson}}+"</button></div>"
+      temp = iTag+aTag+rTag
+    }
+    else if({{v|tojson}}==1){
+      t = "<p class=\"notification\">You have accepted "+ {{k|tojson}} + "!</p></div>"
+      temp = iTag+t
+    }
+    else{
+      t = "<p class=\"notification\">You have rejected "+ {{k|tojson}} + "!</p></div>"
+      temp = iTag+t
+    }
+    $('#noApps').after(temp)
+  </script>
+  {% endfor %}
+  {% endif %}
+  {% if success==0 %}
+  <script>
+    alert("Error submitting transaction")
+  </script>
+  {% elif success==1 %}
+  <script>
+    alert("Candidate accepted succesfully!")
+  </script>
+  {% elif success==2 %}
+  <script>
+    alert("Candidate rejected succesfully!")
+  </script>
+  {% endif %}
+</body>
+</html>
