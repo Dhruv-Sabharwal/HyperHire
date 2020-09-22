@@ -51,10 +51,10 @@ The <b>transcations</b> of interest in the chaincode:
 There are primarily 5 files of interest in the chaincode:
 <ol>
   <li><b>enrollAdmin.js</b> - stores CA admin credentials in wallet dir [Usage - node enrollAdmin.js]
-  <li><b>registerCandidate.js</b> - registers a candidate as a user on the network [Usage - node registerCandidate.js <candidate id>]
-  <li><b>registerCompany.js</b> - registers a company as a user on the network [Usage - node registerCompany.js <company id>]
-  <li><b>invoke.js</b> - used to push transactions to the network [Usage - node invoke.js <transaction type> <company id> <candidate id> <general info> <sensitive info>]
-  <li><b>query.js</b> - used to query transactions on the network [Usage - node query.js <choice> <company id> <candidate id>]
+  <li><b>registerCandidate.js</b> - registers a candidate as a user on the network [Usage - node registerCandidate.js &lt;candidate id&gt;]
+  <li><b>registerCompany.js</b> - registers a company as a user on the network [Usage - node registerCompany.js &lt;company id&gt;]
+  <li><b>invoke.js</b> - used to push transactions to the network [Usage - node invoke.js &lt;transaction type&gt; &lt;company id&gt; &lt;candidate id&gt; &lt;general info&gt; &lt;sensitive info&gt;]
+  <li><b>query.js</b> - used to query transactions on the network [Usage - node query.js &lt;choice&gt; &lt;company id&gt; &lt;candidate id&gt;]
 </ol>
     
 #### 4. Parser
