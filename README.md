@@ -19,8 +19,8 @@ Built using CV2 and a custom classification library. The data on the PDF is sect
 <strong> Demonstration of the resume parser </strong> <br>
 <img src="images/parser.png" alt="parser-image"> <br>
 In the above example, the sensitiveInfo data field will comprise of a nested list containing all the sections that were determined to be sensitive:
-<em>{[Name:Pranay Yadav,(54,58,588,104)], [Address:2 Nangloi Nazafgarh road Delhi 110041,(56,108,262,124)],[Mobile:+918743943900,(264,108,358,124)],[Email:pranay.yadav@outlook.com,(360,108,510,124)]}</em> <br>
-(Note: Current proposal for sensitive data is Name, Gender, Email, Address, and Mobile Number) <br>
+<em>{[Name:Pranay Yadav,(54,58,588,104)], [Address:2 Nangloi Nazafgarh road Delhi 110041,(56,108,262,124)],[Mobile:+918743943900,(264,108,358,124)],[Email:pranay.yadav@outlook.com,(360,108,510,124)]}</em> <br><br>
+(Note: Current proposal for sensitive data is Name, Gender, Email, Address, and Mobile Number) <br><br>
 Similarly, the generalInfo field will contain a nested list of all non-sensitive data.
 
 #### 2. The Chaincode
@@ -29,11 +29,22 @@ The chaincode uses the following global variables:
   <li><b>candidates</b> : an array that stores <candidateID> of all registered candidates (Initially empty).
   <li><b>companies</b> : an array that stores <companyID> of all registered companies (Initially empty).
 </ol>
-An <b> asset (key, value)</b> is <b>(concernedIDs, appInfo)</b> where:
-<b>concernedIDs</b> &#8658 (companyID, candidateID) : Composite key
-<b>appInfo</b> &#8658 {generalInfo : List of key-value pairs as explained earlier, sensitiveInfo : List of key-value pairs as explained earlier, timestamp : UNIX time, accepted : 0 initially, 1 if accepted and 2 if rejected}
+An <b> asset (key, value)</b> is <b>(concernedIDs, appInfo)</b> where:<br>
+<b>concernedIDs</b> &#8658 (companyID, candidateID) : Composite key<br>
+<b>appInfo</b> &#8658 {generalInfo : List of key-value pairs as explained earlier, sensitiveInfo : List of key-value pairs as explained earlier, timestamp : UNIX time, accepted : 0 initially, 1 if accepted and 2 if rejected}<br>
 
-
+The <b>world state</b> will store the <b>(key, value)</b> pairs of all the ledger states.<br><br>
+<b>Proposed Network</b>: 1 organisation with 1 peer and CA and 1 orderer.<br><br>
+The <b>transcations</b> of interest in the chaincode:
+<ol>
+  <li><b>applyJob</b> : This transaction enables a candidate to apply to a company by submitting their resume.
+  <li><b>acceptCandidate</b> : This transaction enables a company to accept the resume of the candidate i.e. the candidate proceeds to the next selection round. It also reveals the sensitive information.
+  <li><b>rejectCandidate</b> : This transaction enables a company to reject the resume of the candidate i.e. the candidate isn't selected for the position. It does not reveal the sensitive information.
+  <li><b>queryCandidate</b> : It allows the company to query the information related to the specified candidate and displays the candidate's resume.
+  <li><b>queryAllCandidates</b> : It allows the company to query the information related to all the candidates and displays their resumes.
+</ol>
+<br>
+<b>Note:</b> queryCandidate and queryAllCandidates will only return information regarding the candidates which have applied to the querying company.
 
 
 
