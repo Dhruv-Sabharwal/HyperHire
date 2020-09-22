@@ -17,10 +17,10 @@ The Hyperledger application is the most important part of our project as it prov
 #### 1. Resume Parser
 Built using CV2 and a custom classification library. The data on the PDF is sectionized while keeping spatial context. These sections are parsed using a custom classification library and the data is converted into key-value pairs of the form - <em>{key: [extracted text, coordinates of section]}</em>, for example - <em>{"name": "[Dhruv Sabharwal, (x1; x2; y1; y2)]"}</em>. These key value pairs are then combined and converted into an asset (along with other data), that can be pushed onto the ledger. Certain key value pairs are marked as sensitive by the classification library and all such sensitive fields are combined and converted into a separate asset that will remain hidden to recruiters. On the recruiter side of the application, the coordinates and extracted text of the general data are used to recreate a pdf that is served to the recruiters.<br><br>
 <strong> Demonstration of the resume parser </strong> <br>
-<img src="images/parser_sample.png" alt="parser-image" width="60%"> <br>
+<img src="images/parser_sample.png" alt="parser-image" width="70%"> <br>
 In the above example, the sensitiveInfo data field will comprise of a nested list containing all the sections that were determined to be sensitive:
 <em>{[Name: Pranay Yadav,(54,58,588,104)], [Address: 2 Nangloi Nazafgarh road Delhi 110041, (56,108,262,124)], [Mobile:+918743943900,(264,108,358,124)],[Email: pranay.yadav@outlook.com, (360,108,510,124)]}</em> <br><br>
-<b>Note:</b> Current proposal for sensitive data is Name, Gender, Email, Address, and Mobile Number <br><br>
+<b>Note:</b> Current proposal for sensitive data is Name, Gender, Email, Address, and Mobile Number <br>
 Similarly, the generalInfo field will contain a nested list of all non-sensitive data.
 
 #### 2. The Chaincode
@@ -36,7 +36,7 @@ An <b> asset (key, value)</b> is <b>(concernedIDs, appInfo)</b> where:<br>
 </ul>
 The <b>world state</b> will store the <b>(key, value)</b> pairs of all the ledger states.<br>
 
-<b>Proposed Network</b>: 1 organisation with 1 peer and CA and 1 orderer.<br>
+<b>Proposed Network</b>: 1 organisation with 1 peer and CA and 1 orderer.<br><br>
 The <b>transcations</b> of interest in the chaincode:
 <ol>
   <li><b>applyJob</b> : This transaction enables a candidate to apply to a company by submitting their resume.
