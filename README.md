@@ -7,7 +7,18 @@ HyperHire is a hiring portal built on the Hyperledger fabric using a flask web a
 On the recruiter side of the application the general content is converted back to a PDF format with the sensitive content redacted. Upon selection of the candidate for further consideration, a transaction on the ledger leads to the uncovering of the sensitive data. The expectation from HyperHire is the removal of racial, gender or any other sort of bias from the hiring process facilitated through the security, anonymity, and decentralization offered by Hyperledger. HyperHire, allows the Hyperledger to be abstracted away offering the same usability offered by other hiring portals. The application has a web-based frontend that allows candidates and recruiters to login and use basic functionalities like applying for jobs and selecting/rejecting applicants. The backend is built on Hyperledger Fabric.
 
 ## Languages and Frameworks used
-The following were used to create the end-to-end application - Python, Javascript, Hyperledger Fabric, Node.js, HTML, CSS & Flask.
+The following were used to create the end-to-end application: Python, Javascript, Hyperledger Fabric, Node.js, HTML, CSS & Flask.
+
+## Demo
+Below you can see screenshots of the application in use. When you load the app, you have the option to login as a candidate or a company. If you are a candidate, you can search for companies and then apply to them by uploading your resume. Once you have uploaded your resume, it is broken into sections, whose data is stored securely on the ledger. The resume itself is discarded and hence at no point can a malicious user gain access to your resume or any of it's sensitive details. A resume, generated from the details stored on the ledger (and visually similar to the resume you uploaded), is then made available to the company.
+
+<img src="images/apply_job.jpeg" alt="apply job"> <br>
+<img src="images/applied.jpeg" alt="applied"> <br>
+
+If you are a company, you can query all candidates, or individual candidates and then look at their resumes. You have the option to accept or reject a particular candidate. Once you have selected one of these options, <b>the sensitive details are revealed</b>.
+
+<img src="images/accept_or_reject.jpg" alt="accept/reject"> <br>
+<img src="images/user_accepted.jpeg" alt="acccepted"> <br>
 
 ## Backend Applications
 HyperHire consists of 2 distinct, though related, backend applications.
@@ -66,14 +77,7 @@ For the parser portion of the application there are primarily 2 files of interes
   <li><b>sectionizer.py</b> - cycles through all .jpg in the root directory starting from 0.jpg and extracts all textual data, saves the data to files general.txt and sensitive.txt in string format that can be pushed directly onto the ledger.
   <li><b>recreater.py</b> - reads general.txt and sensitive.txt and converts the string inside into an image using CV2 puttext function. Also ensures text size, scaling, and position of the extracted text. ouputs the resulting image. 
 </ol>
-Additionaly, a pre-processor will be made for both applications that will stan- dardize the dimensions of the resumes and assign candidate ID, this will plug into the GUI portion of the website.
-
-## 
-Below you can see how the application can be used. When you load the application, you have the option to login as a candidate or a company. If you are a candidate, you can search for companies and then apply to them by uploading your resume. Once you have uploaded your resume, it is broken into sections whose data is stored securely on the ledger. The resume itself is discarded and hence at no point can a malicious user gain access to your resume or any of it's sensitive details. A resume, generated from the details stored on the ledger (and visually similar to the resume you uploaded) is then made available to the company.
-
-
-
-If you are a company, you can query all candidates, or individual candidates and then look at their resumes. You have the option to accept or reject the candidate. Once you have selected one of these options, the sensitive details are revealed as well. 
+Additionaly, a pre-processor will be made for both applications that will standardize the dimensions of the resumes and assign candidate ID, this will plug into the GUI portion of the website. 
 
 ## Benefits
 There are several benefits of implementing a hiring portal using blockchain:
